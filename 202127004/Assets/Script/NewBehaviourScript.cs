@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
+    MyLinkedList<int> list = new();
     // Start is called before the first frame update
     void Start()
     {
-        int[] value = { 3, 5 };
-        MyLinkedList<int> list = new();
         list.AddFirst(1);
         list.AddLast(0);
+        list.AddLast(2);
+        list.AddLast(3);
+        list.AddFirst(9);
         list.Print();
+        Debug.Log(list.Contains(9));
+        list.Clear();
     }
 
     // Update is called once per frame
@@ -34,6 +37,11 @@ public class MyNode<T>
     {
         this.value = value;
         this.next = next;
+    }
+
+    ~MyNode()
+    {
+        Debug.Log(value.ToString() + " ªË¡¶");
     }
 }
 
@@ -92,6 +100,45 @@ public class MyLinkedList<T>
         node.Next = lastNode;
         return lastNode;
     }
+
+    public void AddLast(MyNode<T> node)
+    {
+        count++;
+        if (count == 1)
+        {
+            first = node;
+            return;
+        }
+        MyNode<T> preNode = first;
+        while (preNode.Next != null)
+        {
+            preNode = preNode.Next;
+        }
+        preNode.Next = node;
+    }
+
+    public void Clear()
+    {
+        count = 0;
+        first = null;
+    }
+
+    public bool Contains(T value)
+    {
+        MyNode<T> node = first;
+        bool isTrue = false;
+        while (node != null)
+        {
+            if (node.Value.Equals(value))
+            {
+                isTrue = true;
+                break;
+            }
+            node = node.Next;
+        }
+        return isTrue;
+    }
+
     public void Print()
     {
         MyNode<T> node = first;
