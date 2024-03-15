@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,6 @@ public class NewBehaviourScript : MonoBehaviour
         list.AddLast(3);
         list.AddFirst(9);
         list.Print();
-        Debug.Log(list.Contains(9));
         list.Clear();
     }
 
@@ -48,22 +48,18 @@ public class MyNode<T>
 public class MyLinkedList<T>
 {
     private MyNode<T> first;
-    private int count;
 
-    public int Count { get => count; }
     public MyNode<T> First { get => first; }
 
     public MyLinkedList()
     {
-        count = 0;
         first = null;
     }
 
     public MyLinkedList(T[] values)
     {
-        count = values.Length;
         MyNode<T> prevNode = null;
-        for (int i = 0; i < count; i++) 
+        for (int i = 0; i < values.Length; i++) 
         {
             MyNode<T> node = new(values[i], null);
             if (prevNode == null)
@@ -80,14 +76,12 @@ public class MyLinkedList<T>
 
     public MyNode<T> AddFirst(T value)
     {
-        count++;
-        return first = new MyNode<T>(value, count != 1 ? first : null);
+        return first = new MyNode<T>(value, first ?? null);
     }
 
     public MyNode<T> AddLast(T value)
     {
-        count++;
-        if (count == 1)
+        if (first == null)
         {
             return first = new MyNode<T>(value, null);
         }
@@ -101,42 +95,19 @@ public class MyLinkedList<T>
         return lastNode;
     }
 
-    public void AddLast(MyNode<T> node)
-    {
-        count++;
-        if (count == 1)
-        {
-            first = node;
-            return;
-        }
-        MyNode<T> preNode = first;
-        while (preNode.Next != null)
-        {
-            preNode = preNode.Next;
-        }
-        preNode.Next = node;
-    }
-
     public void Clear()
     {
-        count = 0;
         first = null;
     }
 
-    public bool Contains(T value)
+    public void RemoveFirst()
     {
-        MyNode<T> node = first;
-        bool isTrue = false;
-        while (node != null)
+        if (first == null)
         {
-            if (node.Value.Equals(value))
-            {
-                isTrue = true;
-                break;
-            }
-            node = node.Next;
+            throw new InvalidOperationException();
         }
-        return isTrue;
+        MyNode<T> node = first.Next;
+        first = node ?? null;
     }
 
     public void Print()
