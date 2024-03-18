@@ -29,7 +29,7 @@ public class Bullet02 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.right * Time.deltaTime);
+        transform.Translate(Vector3.right * Time.deltaTime * 4.5f);
     }
 
     private void OnTriggerEnter(Collider other)
