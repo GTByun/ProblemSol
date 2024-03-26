@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - RedCube
+  - bullet02
   layers:
   - Default
   - TransparentFX

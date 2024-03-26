@@ -13,9 +13,4 @@ public class MyNode<T>
         this.value = value;
         this.next = next;
     }
-
-    ~MyNode()
-    {
-        Debug.Log(value.ToString() + " ªË¡¶");
-    }
 }
