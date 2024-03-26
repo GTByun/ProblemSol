@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager02 : MonoBehaviour
+public class GameManager04 : MonoBehaviour
 {
-    public ObjectMemoryPull02 bulletPull;
+    public ObjectMemoryPull04 bulletPull;
 
     private void Update()
     {

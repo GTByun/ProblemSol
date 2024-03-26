@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet02 : MonoBehaviour
+public class Bullet04 : MonoBehaviour
 {
     private bool first = true;
     public float speed;
-    private ObjectMemoryPull02 parentPull;
+    private ObjectMemoryPull04 parentPull;
 
     private void OnDisable()
     {
@@ -22,8 +22,8 @@ public class Bullet02 : MonoBehaviour
 
     private void Start()
     {
-        parentPull = transform.parent.gameObject.GetComponent<ObjectMemoryPull02>();
-        
+        parentPull = transform.parent.gameObject.GetComponent<ObjectMemoryPull04>();
+
     }
 
     // Update is called once per frame

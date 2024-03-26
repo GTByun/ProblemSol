@@ -1,9 +1,10 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectMemoryPull02 : MonoBehaviour
+public class ObjectMemoryPull04 : MonoBehaviour
 {
-    private MyQueue<GameObject> queue;
+    private MyStack<GameObject> stack;
     private int count;
     public GameObject pullObj;
     public int spawnCount;
@@ -19,7 +20,7 @@ public class ObjectMemoryPull02 : MonoBehaviour
             values[i].SetActive(false);
             count++;
         }
-        queue = new MyQueue<GameObject>(values);
+        stack = new MyStack<GameObject>(values);
     }
 
     public GameObject Spawn()
@@ -29,7 +30,7 @@ public class ObjectMemoryPull02 : MonoBehaviour
             return null;
         }
         count--;
-        GameObject obj = queue.Dequeue();
+        GameObject obj = stack.Pop();
         obj.SetActive(true);
         return obj;
     }
@@ -37,6 +38,6 @@ public class ObjectMemoryPull02 : MonoBehaviour
     public void Despawn(GameObject obj)
     {
         count++;
-        queue.Enqueue(obj);
+        stack.Push(obj);
     }
 }
