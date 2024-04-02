@@ -38,10 +38,6 @@ public class MyStack<T>
             array[i] = stack.Dequeue();
         }
         T ret = stack.Dequeue();
-        if (ret == null)
-        {
-            Debug.Log("이거 널이야");
-        }
         for (int i = 0;i < count - 1; i++)
         {
             stack.Enqueue(array[i]);
