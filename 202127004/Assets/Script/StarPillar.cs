@@ -72,7 +72,7 @@ public class StarPillar : MonoBehaviour
 
         mf.mesh = mesh;
 
-        
+        mr.material.color = Color.yellow;
 
 
         for (int i = 0; i < 20; i++) 
