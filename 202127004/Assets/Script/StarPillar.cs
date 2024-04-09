@@ -5,25 +5,34 @@ using UnityEngine;
 
 public class StarPillar : MonoBehaviour
 {
-    public GameObject myCircle;
+    public Material material;
     private void Awake()
     {
         Vector3[] dot = new Vector3[20];
         float pi = Mathf.PI / 180;
-        Mesh mesh = new Mesh();
+        Mesh mesh = new();
         for (int i = 0; i < 2; i++)
         {
             float thisY = 0.5f - i;
-            for (int j = 0; j < 5; j++) 
+            for (int j = 0; j < 5; j++)
             {
-                dot[i * 10 + j] = new Vector3(Mathf.Cos(j * 72 * pi), thisY, Mathf.Sin(j * 72* pi));
+                dot[i * 10 + j] = new Vector3(Mathf.Cos(j * 72 * pi), thisY, Mathf.Sin(j * 72 * pi));
             }
-            for (int j = 0; j < 5;j++)
+            for (int j = 0; j < 5; j++)
             {
                 dot[i * 10 + 5 + j] = new Vector3(Mathf.Cos((j * 72 + 36) * pi) / 2, thisY, Mathf.Sin((j * 72 + 36) * pi) / 2);
             }
         }
         mesh.vertices = dot;
+
+        
+
+        //for (int i = 0; i < 20; i++)
+        //{
+        //    dot[i].Normalize();
+        //}
+
+        mesh.normals = dot;
 
         int[] triangles =
         {
@@ -67,17 +76,13 @@ public class StarPillar : MonoBehaviour
 
         mesh.triangles = triangles;
 
+
         MeshFilter mf = this.AddComponent<MeshFilter>();
         MeshRenderer mr = this.AddComponent<MeshRenderer>();
 
         mf.mesh = mesh;
 
-        mr.material.color = Color.yellow;
 
-
-        for (int i = 0; i < 20; i++) 
-        {
-            Instantiate(myCircle, dot[i], Quaternion.identity);
-        }
+        mr.material = material;
     }
 }

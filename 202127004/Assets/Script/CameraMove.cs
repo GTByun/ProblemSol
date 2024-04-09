@@ -40,5 +40,14 @@ public class CameraMove : MonoBehaviour
         {
             transform.Translate(speed * Time.deltaTime * Vector3.down);
         }
+        if (Input.GetKey(KeyCode.Z))
+        {
+            transform.Rotate(25 * speed * Time.deltaTime * new Vector3(1, 0, 0));
+        }
+        if (Input.GetKey(KeyCode.X))
+        {
+            transform.Rotate(25 * speed * Time.deltaTime * new Vector3(-1, 0, 0));
+        }
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0);
     }
 }
