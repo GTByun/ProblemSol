@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class StarPillar : MonoBehaviour
+public partial class StarPillar : MonoBehaviour
 {
     public Material material;
+    public bool dotNormals;
     private void Awake()
     {
         Vector3[] dot = new Vector3[20];
@@ -25,54 +25,121 @@ public class StarPillar : MonoBehaviour
         }
         mesh.vertices = dot;
 
+        int[,] dotList = { 
+            { 4, 0, 1, 2, 3, 4, 0 }, 
+            { 9, 5, 6, 7, 8, 9, 5 }, 
+            { 14, 10, 11, 12, 13, 14, 10 }, 
+            { 19, 15, 16, 17, 18, 19, 15 } };
+
+        Face[] faceList = new Face[36];
+        for (int i = 0; i < faceList.Length; i++)
+        {
+            faceList[i].dot = new int[3];
+        }
+
+        int faceNum = 0;
+
+        for (int i = 0; i < 5; i++)
+        {
+            faceList[faceNum].Dot3Set(dotList[1, i + 1], dotList[0, i + 1], dotList[1, i]);
+            faceNum++;
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            faceList[faceNum].Dot3Set(dotList[3, i + 1], dotList[2, i + 2], dotList[3, i + 2]);
+            faceNum++;
+        }
+
+        int[] fivePoly = new int[9];
+        fivePoly[0] = 8; fivePoly[1] = 6; fivePoly[2] = 5; fivePoly[3] = 5; fivePoly[4] = 9; fivePoly[5] = 8; fivePoly[6] = 8; fivePoly[7] = 7; fivePoly[8] = 6;
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                faceList[faceNum].dot[j] = fivePoly[i * 3 + j];
+            }
+            faceNum++;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                faceList[faceNum].dot[j] = fivePoly[8 - (i * 3 + j)] + 10;
+            }
+            faceNum++;
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            faceList[faceNum].Dot3Set(dotList[2, i + 1], dotList[1, i], dotList[0, i + 1]);
+            faceNum++;
+            faceList[faceNum].Dot3Set(dotList[1, i], dotList[2, i + 1], dotList[3, i]);
+            faceNum++;
+            faceList[faceNum].Dot3Set(dotList[0, i + 1], dotList[1, i + 1], dotList[2, i + 1]);
+            faceNum++;
+            faceList[faceNum].Dot3Set(dotList[3, i + 1], dotList[2, i + 1], dotList[1, i + 1]);
+            faceNum++;
+        }
+
+        if (dotNormals)
+        {
+            Vector3[] normals = new Vector3[20];
+
+            for (int i = 0; i < normals.Length; i++)
+            {
+                MyQueue<Face> faceQueue = new();
+                int dotFaceNum = 0;
+
+                for (int j = 0; j < faceList.Length; j++)
+                {
+                    if (faceList[j].DotInclude(i))
+                    {
+                        faceQueue.Enqueue(faceList[j]);
+                        dotFaceNum++;
+                    }
+                }
+
+                Vector3[] dotNormals = new Vector3[dotFaceNum];
+                for (int j = 0; j < dotNormals.Length; j++)
+                {
+                    Face dotFace = faceQueue.Dequeue();
+                    int[] twoPoints = dotFace.FirstThis(i);
+                    Vector3 side1 = dot[twoPoints[0]] - dot[i];
+                    Vector3 side2 = dot[twoPoints[1]] - dot[i];
+                    dotNormals[j] = Vector3.Cross(side1, side2).normalized;
+
+                }
+                dotNormals = dotNormals.Distinct().ToArray();
+                Vector3 dotNormalsSum = Vector3.zero;
+                for (int j = 0; j < dotNormals.Length; j++)
+                {
+                    dotNormalsSum += dotNormals[j];
+                }
+                dotNormalsSum.Normalize();
+
+                normals[i] = dotNormalsSum;
+            }
+
+            mesh.normals = normals;
+        }
+        else
+        {
+            mesh.normals = dot;
+        }
         
 
-        //for (int i = 0; i < 20; i++)
-        //{
-        //    dot[i].Normalize();
-        //}
+        int[] triangles = new int[faceList.Length * 3];
 
-        mesh.normals = dot;
-
-        int[] triangles =
+        for (int i = 0; i < faceList.Length; i++)
         {
-            0, 9, 5,
-            1, 5, 6,
-            2, 6, 7,
-            3, 7, 8,
-            4, 8, 9,
-            8, 7, 6,
-            9, 8, 5,
-            8, 6, 5,
-            10, 15, 19,
-            11, 16, 15,
-            12, 17, 16,
-            13, 18, 17,
-            14, 19, 18,
-            18, 16, 17,
-            19, 15, 18,
-            18, 15, 16,
-            0, 10, 9,
-            10, 19, 9,
-            0, 5, 10,
-            10, 5, 15,
-            1, 11, 5,
-            11, 15, 5,
-            1, 6, 11,
-            11, 6, 16,
-            2, 12, 6,
-            12, 16, 6,
-            2, 7, 12,
-            12, 7, 17,
-            3, 13, 7,
-            13, 17, 7,
-            3, 8, 13,
-            13, 8, 18,
-            4, 14, 8,
-            14, 18, 8,
-            4, 9, 14,
-            14, 9, 19
-        };
+            for (int j = 0; j < 3; j++)
+            {
+                triangles[i * 3 + j] = faceList[i].dot[j];
+            }
+        }
 
         mesh.triangles = triangles;
 

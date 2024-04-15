@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Material
+  m_Name: New Material 1
   m_Shader: {fileID: 4800000, guid: 245a3793a8bd8ea47a71b8d664455dee, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -84,9 +84,9 @@ Material:
     - _bandNum: 4
     m_Colors:
     - _Color: {r: 0.8018868, g: 0.748042, b: 0.17777678, a: 1}
-    - _DiffuseColor: {r: 0.735849, g: 0.61231226, b: 0, a: 1}
+    - _DiffuseColor: {r: 0.7372549, g: 0.039996583, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LightDirection: {r: 1, g: 1, b: -1, a: 0}
-    - _ShadowColor: {r: 1, g: 0.121432945, b: 0, a: 1}
+    - _ShadowColor: {r: 1, g: 0.5274616, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
