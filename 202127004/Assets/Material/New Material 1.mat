@@ -74,7 +74,7 @@ Material:
     - _OcclusionStrength: 1
     - _Outline: 0.4
     - _Parallax: 0.02
-    - _Sharpness: 22
+    - _Sharpness: 500
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SpecularPower: 1
@@ -84,9 +84,9 @@ Material:
     - _bandNum: 4
     m_Colors:
     - _Color: {r: 0.8018868, g: 0.748042, b: 0.17777678, a: 1}
-    - _DiffuseColor: {r: 0.7372549, g: 0.039996583, b: 0, a: 1}
+    - _DiffuseColor: {r: 0, g: 1, b: 0.53888893, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LightDirection: {r: 1, g: 1, b: -1, a: 0}
-    - _ShadowColor: {r: 1, g: 0.5274616, b: 0, a: 1}
+    - _ShadowColor: {r: 0.074971676, g: 0, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
