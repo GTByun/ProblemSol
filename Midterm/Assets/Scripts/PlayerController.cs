@@ -1,15 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    int speed = 5;
+    private int speed = 5;
     private Camera cam;
     bool camLock = false;
     Vector3 nowAngle;
     Vector3 aimAngle;
     float aniTime;
+    Vector3 moveVector;
 
     private void Awake()
     {
@@ -21,8 +20,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(key))
         {
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, axis, transform.rotation.eulerAngles.z);
-            transform.Translate(speed * Time.deltaTime * Vector3.forward);
+            //transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, axis, transform.rotation.eulerAngles.z));
+            moveVector += new Vector3(Mathf.Sin(axis / 180 * Mathf.PI), 0, Mathf.Cos(axis / 180 * Mathf.PI));
         }
     }
 
@@ -33,6 +32,7 @@ public class PlayerController : MonoBehaviour
             Vector3 camAng = cam.transform.rotation.eulerAngles;
             nowAngle = camAng;
             aimAngle = new Vector3(camAng.x, camAng.y + angle, camAng.z);
+            aniTime = 0;
             camLock = true;
         }
     }
@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour
         if (camLock)
         {
             aniTime += Time.deltaTime;
-            aniTime = Mathf.Max(aniTime, 1);
             cam.transform.rotation = Quaternion.Euler(Vector3.Lerp(nowAngle, aimAngle, aniTime));
             if (aniTime > 1)
             {
@@ -56,10 +55,17 @@ public class PlayerController : MonoBehaviour
             }
             
         }
-        Moving(KeyCode.W, camRotationY);
-        Moving(KeyCode.D, camRotationY + 90);
-        Moving(KeyCode.S, camRotationY + 180);
-        Moving(KeyCode.A, camRotationY + 270);
+        moveVector = Vector3.zero;
+        Moving(KeyCode.A, camRotationY);
+        Moving(KeyCode.W, camRotationY + 90);
+        Moving(KeyCode.D, camRotationY + 180);
+        Moving(KeyCode.S, camRotationY + 270);
+        if (moveVector != Vector3.zero) 
+        {
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, -Mathf.Atan2(moveVector.z, moveVector.x) * 180 / Mathf.PI, transform.rotation.eulerAngles.z);
+            transform.Translate(speed * Time.deltaTime * Vector3.forward);
+        }
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -15, 15), 1, Mathf.Clamp(transform.position.z, -15, 15));
         AngleAnimeStart(KeyCode.O, 90);
         AngleAnimeStart(KeyCode.P, -90);
     }
